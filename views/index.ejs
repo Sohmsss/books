@@ -34,7 +34,7 @@
     <div class="book-list">
       <% if (books && books.length > 0) { %>
         <% books.forEach(book => { %>
-          <div class="book-card">
+          <div class="book-card" id="book-<%= book.id %>" data-isbn="<%= book.isbn %>">
             <div class="book-cover-container">
               <% if (book.isbn) { %>
                 <img 
@@ -50,10 +50,14 @@
               <% } %>
             </div>
             <div class="book-details">
-              <h3><%= book.title %></h3>
+              <h3 class="book-title"><%= book.title %></h3>
               <p class="notes"><%= book.notes %></p>
               <div class="rating-badge">
                 <%= book.rating %>/10
+              </div>
+              <div class="book-actions">
+                <button onclick="editBook('<%= book.id %>')" class="action-button edit">Edit</button>
+                <button onclick="deleteBook('<%= book.id %>')" class="action-button delete">Delete</button>
               </div>
             </div>
           </div>
@@ -65,5 +69,6 @@
       <% } %>
     </div>
   </div>
+  <script src="/scripts.js"></script>
 </body>
 </html>

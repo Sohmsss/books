@@ -10,6 +10,7 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use(express.json());
 
 db.connect();
 
@@ -34,6 +35,32 @@ app.post("/add-book", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.redirect("/");
+  }
+});
+
+app.put("/update-book/:id", async (req, res) => {
+  const { id } = req.params;
+  const { title, notes, rating, isbn } = req.body;
+  try {
+    await db.query(
+      "UPDATE books SET title = $1, notes = $2, rating = $3, isbn = $4 WHERE id = $5",
+      [title, notes, rating, isbn, id]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false });
+  }
+});
+
+app.delete("/delete-book/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.query("DELETE FROM books WHERE id = $1", [id]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false });
   }
 });
 
