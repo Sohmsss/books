@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reading List</title>
+  <link rel="stylesheet" href="/styles.css">
+  <!-- Add SF Pro font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Reading List</h1>
+    </header>
+    
+    <form action="/add-book" method="POST" class="add-book-form">
+      <div class="form-group">
+        <input type="text" name="title" placeholder="Book Title" required>
+      </div>
+      <div class="form-group">
+        <input type="text" name="isbn" placeholder="ISBN (optional)" pattern="[0-9]{10}|[0-9]{13}" title="10 or 13 digit ISBN number">
+      </div>
+      <div class="form-group">
+        <textarea name="notes" placeholder="Your Notes"></textarea>
+      </div>
+      <div class="form-group rating-group">
+        <label>Rating</label>
+        <input type="number" name="rating" min="0" max="10" placeholder="0-10" required>
+      </div>
+      <button type="submit" class="submit-button">Add Book</button>
+    </form>
+
+    <div class="book-list">
+      <% if (books && books.length > 0) { %>
+        <% books.forEach(book => { %>
+          <div class="book-card">
+            <div class="book-cover-container">
+              <% if (book.isbn) { %>
+                <img 
+                  src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" 
+                  alt="Cover of <%= book.title %>"
+                  class="book-cover"
+                  onerror="this.src='/images/default-cover.jpg'; this.onerror=null;"
+                >
+              <% } else { %>
+                <div class="book-cover-placeholder">
+                  <span><%= book.title[0] %></span>
+                </div>
+              <% } %>
+            </div>
+            <div class="book-details">
+              <h3><%= book.title %></h3>
+              <p class="notes"><%= book.notes %></p>
+              <div class="rating-badge">
+                <%= book.rating %>/10
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="empty-state">
+          <p>No books added yet!</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>
