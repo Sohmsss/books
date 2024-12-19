@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import { db } from "./config/database.js";
+import { db, connectWithRetry } from "./config/database.js";
 
 dotenv.config();
 
@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(express.json());
 
-db.connect();
+connectWithRetry();
 
 app.get("/", async (req, res) => {
   try {

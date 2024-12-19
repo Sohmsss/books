@@ -4,6 +4,18 @@ A simple book tracking app that lets you save and rate books you've read.
 
 ## Setup
 
+### Using Docker (Recommended)
+
+1. Install Docker and Docker Compose
+2. Clone this repository
+3. Run:
+   ```bash
+   docker-compose up -d
+   ```
+4. Open [http://localhost:3000](http://localhost:3000)
+
+### Manual Setup
+
 1. Install Node.js and PostgreSQL
 2. Create a database called `books`
 3. Run this SQL:

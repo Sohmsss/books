@@ -1,5 +1,5 @@
-import dotenv from "dotenv";    
 import pg from "pg";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -11,4 +11,19 @@ const db = new pg.Client({
   port: process.env.DB_PORT,
 });
 
-export { db };
+const connectWithRetry = async () => {
+  let retries = 5;
+  while (retries) {
+    try {
+      await db.connect();
+      console.log('Connected to PostgreSQL database');
+      break;
+    } catch (err) {
+      console.log(`Failed to connect to PostgreSQL (${retries} retries left)`);
+      retries -= 1;
+      await new Promise(resolve => setTimeout(resolve, 5000));
+    }
+  }
+};
+
+export { db, connectWithRetry };
